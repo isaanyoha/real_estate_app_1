@@ -31,7 +31,10 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
+  late AnimationController _controller1;
+  late Animation<Offset> _animation1;
+
   int _selectedIndex = 0; // To track the selected index
 
   // List of pages to display
@@ -48,6 +51,30 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _controller1 = AnimationController(
+      duration: Duration(milliseconds: 1000),
+      vsync: this,
+    );
+
+    _animation1 = Tween<Offset>(
+      begin: Offset(0.0, 1.0), // Start from below
+      end: Offset.zero, // End at its original position
+    ).animate(CurvedAnimation(
+      parent: _controller1,
+      curve: Curves.easeInOut,
+    ));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(milliseconds: 7000), () {
+        _controller1.forward();
+      });
+    });
+  }
+
+    @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -57,7 +84,13 @@ class _MainPageState extends State<MainPage> {
             bottom: 20, // Distance from bottom
             left: 0,
             right: 0,
-            child: Container(
+            child:
+            SlideTransition(
+              position: _animation1,
+              child: FadeTransition(
+                opacity: _controller1.drive(CurveTween(curve: Curves.easeIn)),
+                child:
+            Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
               padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
               decoration: BoxDecoration(
@@ -145,6 +178,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
+            )),
             ),
           ),
         ],
