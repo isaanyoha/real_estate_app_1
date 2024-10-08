@@ -108,19 +108,19 @@ class _HomePageState extends State<HomePage>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller1.forward();
 
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(Duration(milliseconds: 1200), () {
         _controller2.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(Duration(milliseconds: 1500), () {
         _controller3.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 1000), () {
+      Future.delayed(Duration(milliseconds: 1800), () {
         _controller4.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 2200), () {
+      Future.delayed(Duration(milliseconds: 3000), () {
         _controller5.forward();
       });
     });
@@ -152,7 +152,7 @@ class _HomePageState extends State<HomePage>
             children: [
               Container(
                   padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
-                  child: Column(
+                  child: SingleChildScrollView(child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -192,7 +192,12 @@ class _HomePageState extends State<HomePage>
                   scale: _roundedScaleAnimation1.value,
                   child: CircleAvatar(
                   child: ClipOval(
-                  child: Icon(Icons.face, size: 30, color: Colors.brown,),
+                  child: Image.asset(
+                    "assets/images/profile_1.jpeg", // Update with your asset image path
+                    fit: BoxFit.cover, // Ensures the image covers the entire CircleAvatar
+                    width: 60, // Adjust the width as needed
+                    height: 60, // Adjust the height as needed
+                  ),
                 )));
               },
             )
@@ -204,7 +209,7 @@ class _HomePageState extends State<HomePage>
               Row(children:[
           TweenAnimationBuilder(
             tween: Tween<double>(begin: 0.0, end: _opacity),
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 0),
             builder: (context, opacity, child) {
               return Opacity(
                 opacity: opacity,
@@ -213,27 +218,35 @@ class _HomePageState extends State<HomePage>
             },
           ),
         ]),
-              Row(children:[
+              Row(children: [
                 Column(
-                    mainAxisAlignment: MainAxisAlignment
-                        .start,
-                    crossAxisAlignment: CrossAxisAlignment
-                        .start,
-                    children:[
-                SlideTransition(
-                    position: _slideAnimation1,
-                    child: Text("let's select your",
-                      style: TextStyle(fontSize: 35),
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SlideTransition(
+                      position: _slideAnimation1,
+                      child: FadeTransition(
+                        opacity: _controller2.drive(CurveTween(curve: Curves.easeIn)),
+                        child: Text(
+                          "let's select your",
+                          style: TextStyle(fontSize: 35),
+                        ),
+                      ),
                     ),
+                    SlideTransition(
+                      position: _slideAnimation2,
+                      child: FadeTransition(
+                        opacity: _controller3.drive(CurveTween(curve: Curves.easeIn)),
+                        child: Text(
+                          "perfect place",
+                          style: TextStyle(fontSize: 35),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                  SlideTransition(
-                    position: _slideAnimation2,
-                    child: Text("perfect place",
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  )
               ])
-            ])])),
+            ])),
               Row(
                 children: [
                   // Left: Circle
@@ -351,14 +364,14 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                 ])
-            ])),
+            ]))),
               SlideTransition(
                   position: _slideAnimation3,
                   child: Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   color: Colors.white, // Set the background color to white
-                  borderRadius: BorderRadius.circular(16), // Apply rounded corners
+                  borderRadius: BorderRadius.circular(20), // Apply rounded corners
                 ),
                 child: Column(
                   children: [
@@ -366,7 +379,7 @@ class _HomePageState extends State<HomePage>
                       child: Row(
                         children: [
                           Expanded(
-                            child: GalleryContentWidget1(typeId: 3),
+                            child: GalleryContentWidget1(id1: 1),
                           ),
                         ],
                       ),
@@ -375,18 +388,18 @@ class _HomePageState extends State<HomePage>
                       child: Row(
                         children: [
                           Expanded(
-                            child: GalleryContentWidget1(typeId: 2),
+                            child: GalleryContentWidget1(id1: 2),
                           ),
                           Expanded(
                             child: Column(
                               children: [
                                 Expanded(
                                   flex: 1,
-                                  child: GalleryContentWidget1(typeId: 1),
+                                  child: GalleryContentWidget1(id1: 3),
                                 ),
                                 Expanded(
                                   flex: 1,
-                                  child: GalleryContentWidget1(typeId: 1),
+                                  child: GalleryContentWidget1(id1: 4),
                                 ),
                               ],
                             ),

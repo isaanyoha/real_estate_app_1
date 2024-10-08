@@ -92,3 +92,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: CustomFontWithFallback
+      fonts:
+        - asset: assets/fonts/Euclid-Circular-A-Regular.ttf
+        - asset: assets/fonts/Euclid-Circular-A-Medium.ttf
+          weight: 900

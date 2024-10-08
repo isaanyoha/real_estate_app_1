@@ -78,7 +78,7 @@ class _CounterWidget1State extends State<CounterWidget1> {
   Stream<String> counterStream(BuildContext context) async* {
     for (int i = startValue; i <= endValue; i++) {
       yield i.toString();
-      await Future.delayed(const Duration(microseconds: 500));
+      await Future.delayed(const Duration(microseconds: 250));
     }
   }
 }

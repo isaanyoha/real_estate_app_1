@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class SliderWidget1 extends StatefulWidget {
-  final int? typeId;
+  final int? id1;
   final AnimationController? animationController;
 
   SliderWidget1({
     Key? key,
-    this.typeId,
+    this.id1,
     this.animationController,
   }) : super(key: key);
 
@@ -27,7 +27,7 @@ class _SliderWidget1State extends State<SliderWidget1>
   late AnimationController _controller5;
 
   late Animation<double> _text1Animation1;
-  int typeId = 0;
+  int id1 = 0;
   double _opacity = 0.0;
 
   @override
@@ -84,23 +84,23 @@ class _SliderWidget1State extends State<SliderWidget1>
 
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(milliseconds: 4500), () {
+      Future.delayed(Duration(milliseconds: 5000), () {
         _controller1.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 4000), () {
+      Future.delayed(Duration(milliseconds: 4500), () {
         _controller2.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 4500), () {
+      Future.delayed(Duration(milliseconds: 5000), () {
         _controller3.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 4000), () {
+      Future.delayed(Duration(milliseconds: 4500), () {
         _controller4.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 5000), () {
+      Future.delayed(Duration(milliseconds: 5500), () {
         _controller5.forward();
       });
 
@@ -143,21 +143,21 @@ class _SliderWidget1State extends State<SliderWidget1>
     // Get the screen width
     double screenWidth = MediaQuery.of(context).size.width - 10 - 20;
 
-    typeId = widget.typeId ?? 1; // Set default typeId to 1 if null
+    id1 = widget.id1 ?? 1; // Set default id1 to 1 if null
 
-    if (typeId != 3) {
+    if (id1 != 1) {
       screenWidth = screenWidth / 2.1;
     }
 
     String text1 = "";
 
-    if (typeId == 1) {
-      text1 = "Trefoleva St., 43";
-    }else if (typeId == 2) {
-      text1 = "Gubina St., 11";
-    }else if (typeId == 3) {
+    if (id1 == 1) {
       text1 = "Gladkova St., 25";
-    }else if (typeId == 4) {
+    }else if (id1 == 2) {
+      text1 = "Gubina St., 11";
+    }else if (id1 == 3) {
+      text1 = "Trefoleva St., 43";
+    }else if (id1 == 4) {
       text1 = "Sedova St., 22";
     }
 
@@ -179,10 +179,11 @@ class _SliderWidget1State extends State<SliderWidget1>
             return Transform.scale(
               scale: _roundedScaleAnimation2.value, // Apply the scale animation to the container
               child: Container(
+                padding: const EdgeInsets.only(top: 3, bottom: 3, left: 4, right: 4),
                 width: _stretchAnimation.value, // Animate the container's width
                 decoration: BoxDecoration(
                   color: Colors.white60,
-                  borderRadius: BorderRadius.circular(20), // Adjust for roundness
+                  borderRadius: BorderRadius.circular(25), // Adjust for roundness
                   boxShadow: const [
                     BoxShadow(color: Colors.black26, blurRadius: 5.0),
                   ],
@@ -197,10 +198,20 @@ class _SliderWidget1State extends State<SliderWidget1>
                         builder: (context, child) {
                           return Transform.scale(
                             scale: _roundedScaleAnimation1.value,
-                            child: Icon(
-                              Icons.arrow_circle_right,
-                              color: Colors.brown[300],
-                              size: 50,
+                            child: Container(
+                              width: 40, // Set width and height to ensure it's a circle
+                              height: 40,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.orange[50],
+                              ),
+                              child: Center(  // Center the icon within the circle
+                                child: Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.brown[300],
+                                  size: 20,
+                                ),
+                              ),
                             ),
                           );
                         },
@@ -218,7 +229,7 @@ class _SliderWidget1State extends State<SliderWidget1>
             left: 0,
             right: 0,
             child: Center(
-                child: Align(alignment: typeId == 3 ? Alignment.center : Alignment.centerLeft , child: Padding(padding: EdgeInsets.only(left: typeId == 3 ? 0: 5), child:
+                child: Align(alignment: id1 == 1 ? Alignment.center : Alignment.centerLeft , child: Padding(padding: EdgeInsets.only(left: id1 == 1 ? 0: 5), child:
 
     AnimatedBuilder(
     animation: _text1Animation1,
