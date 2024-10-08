@@ -20,7 +20,6 @@ class _SliderWidget1State extends State<SliderWidget1>
   late Animation<double> _roundedScaleAnimation2;
   late Animation<double> _slideAnimation; // Animation for sliding effect
   late Animation<double> _stretchAnimation; // Animation for stretching
-  late AnimationController _controller1;
   late AnimationController _controller2;
   late AnimationController _controller3;
   late AnimationController _controller4;
@@ -28,24 +27,10 @@ class _SliderWidget1State extends State<SliderWidget1>
 
   late Animation<double> _text1Animation1;
   int id1 = 0;
-  double _opacity = 0.0;
 
   @override
   void initState() {
     super.initState();
-
-    // Simulate a delay before starting the fade-in effect
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        _opacity = 1.0;
-      });
-    });
-
-    _controller1 = AnimationController(
-      duration: Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
     _controller2 = AnimationController(
       duration: Duration(milliseconds: 500),
       vsync: this,
@@ -84,26 +69,33 @@ class _SliderWidget1State extends State<SliderWidget1>
 
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(milliseconds: 5000), () {
-        _controller1.forward();
-      });
 
-      Future.delayed(Duration(milliseconds: 4500), () {
+      int delay = 0;
+      if(id1 == 1){
+        delay = 0;
+      }else if(id1 == 3){
+        delay = 100;
+      }else if(id1 == 2 || id1 == 4){
+        delay = 500;
+      }
+
+      Future.delayed(Duration(milliseconds: delay), () {
+        Future.delayed(Duration(milliseconds: 5000), () {
         _controller2.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 5000), () {
+      Future.delayed(Duration(milliseconds: 5500), () {
         _controller3.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 4500), () {
+      Future.delayed(Duration(milliseconds: 5000), () {
         _controller4.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 5500), () {
+      Future.delayed(Duration(milliseconds: 6000), () {
         _controller5.forward();
       });
-
+    });
     });
 
     _roundedScaleAnimation1 = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -132,7 +124,6 @@ class _SliderWidget1State extends State<SliderWidget1>
   @override
   void dispose() {
     super.dispose();
-    _controller1.dispose();
     _controller2.dispose();
     _controller3.dispose();
     _controller4.dispose();
@@ -143,7 +134,7 @@ class _SliderWidget1State extends State<SliderWidget1>
     // Get the screen width
     double screenWidth = MediaQuery.of(context).size.width - 10 - 20;
 
-    id1 = widget.id1 ?? 1; // Set default id1 to 1 if null
+    id1 = widget.id1 ?? 1;
 
     if (id1 != 1) {
       screenWidth = screenWidth / 2.1;
@@ -182,7 +173,7 @@ class _SliderWidget1State extends State<SliderWidget1>
                 padding: const EdgeInsets.only(top: 3, bottom: 3, left: 4, right: 4),
                 width: _stretchAnimation.value, // Animate the container's width
                 decoration: BoxDecoration(
-                  color: Colors.white60,
+                  color: Colors.white.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(25), // Adjust for roundness
                   boxShadow: const [
                     BoxShadow(color: Colors.black26, blurRadius: 5.0),
@@ -204,6 +195,13 @@ class _SliderWidget1State extends State<SliderWidget1>
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: Colors.orange[50],
+                                boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.4), // Shadow color
+        blurRadius: 10.0, // Spread of the shadow
+        offset: Offset(2.0, 2.0), // Direction of the shadow
+      ),
+    ],
                               ),
                               child: Center(  // Center the icon within the circle
                                 child: Icon(

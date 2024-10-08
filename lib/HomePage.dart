@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage>
     super.initState();
 
     _controller1 = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 500),
       vsync: this,
     );
 
@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage>
     );
 
     _controller5 = AnimationController(
-      duration: Duration(milliseconds: 2000),
+      duration: Duration(milliseconds: 1000),
       vsync: this,
     );
 
@@ -108,19 +108,19 @@ class _HomePageState extends State<HomePage>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller1.forward();
 
-      Future.delayed(Duration(milliseconds: 1200), () {
+      Future.delayed(Duration(milliseconds: 2000), () {
         _controller2.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 1500), () {
+      Future.delayed(Duration(milliseconds: 2100), () {
         _controller3.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 1800), () {
+      Future.delayed(Duration(milliseconds: 2600), () {
         _controller4.forward();
       });
 
-      Future.delayed(Duration(milliseconds: 3000), () {
+      Future.delayed(Duration(milliseconds: 3800), () {
         _controller5.forward();
       });
     });
