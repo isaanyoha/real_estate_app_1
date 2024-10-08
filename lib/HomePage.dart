@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:real_estate_app_1/CounterWidget1.dart';
+import 'package:real_estate_app_1/GalleryContentWidget1.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +13,7 @@ class _HomePageState extends State<HomePage>
   late AnimationController _controller2;
   late AnimationController _controller3;
   late AnimationController _controller4;
+  late AnimationController _controller5;
   late Animation<double> _rectangleAnimation;
   late Animation<double> _roundedScaleAnimation1;
   late Animation<double> _roundedScaleAnimation2;
@@ -18,6 +21,7 @@ class _HomePageState extends State<HomePage>
   double _opacity = 0.0;
   late Animation<Offset> _slideAnimation1;
   late Animation<Offset> _slideAnimation2;
+  late Animation<Offset> _slideAnimation3;
 
   @override
   void initState() {
@@ -40,6 +44,11 @@ class _HomePageState extends State<HomePage>
 
     _controller4 = AnimationController(
       duration: Duration(milliseconds: 1000),
+      vsync: this,
+    );
+
+    _controller5 = AnimationController(
+      duration: Duration(milliseconds: 2000),
       vsync: this,
     );
 
@@ -87,10 +96,21 @@ class _HomePageState extends State<HomePage>
       curve: Curves.easeInOut,
     ));
 
+    _slideAnimation3 = Tween<Offset>(
+      begin: Offset(0.0, 1.0), // Start from below
+      end: Offset.zero, // End at its original position
+    ).animate(CurvedAnimation(
+      parent: _controller5,
+      curve: Curves.easeInOut,
+    ));
+
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller1.forward();
-      _controller2.forward();
+
+      Future.delayed(Duration(milliseconds: 500), () {
+        _controller2.forward();
+      });
 
       Future.delayed(Duration(milliseconds: 500), () {
         _controller3.forward();
@@ -98,6 +118,10 @@ class _HomePageState extends State<HomePage>
 
       Future.delayed(Duration(milliseconds: 1000), () {
         _controller4.forward();
+      });
+
+      Future.delayed(Duration(milliseconds: 2200), () {
+        _controller5.forward();
       });
     });
   }
@@ -108,6 +132,7 @@ class _HomePageState extends State<HomePage>
     _controller2.dispose();
     _controller3.dispose();
     _controller4.dispose();
+    _controller5.dispose();
     super.dispose();
   }
 
@@ -115,7 +140,6 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.white70, Colors.orangeAccent], // Add your two colors here
@@ -126,7 +150,9 @@ class _HomePageState extends State<HomePage>
           child: Center(
         child: Stack(
             children: [
-              Column(
+              Container(
+                  padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                  child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -228,11 +254,11 @@ class _HomePageState extends State<HomePage>
                                       color: Colors.orangeAccent,
                                       shape: BoxShape.circle, // Makes the container a circle
                                     ),
-                                    child: const Stack(
+                                    child: Stack(
                                       alignment: Alignment.center, // Center aligns all children
                                       children: [
                                         // Positioned for "BUY" at the top center
-                                        Positioned(
+                                        const Positioned(
                                           top: 20, // Position at the top
                                           child: Text(
                                             "BUY",
@@ -241,11 +267,14 @@ class _HomePageState extends State<HomePage>
                                           ),
                                         ),
                                         // Center the "1024" text
+                                        /**
                                         Text(
                                           "1024",
                                           style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.white),
                                           textAlign: TextAlign.center,
-                                        ),
+                                        )**/
+                                        CounterWidget1(typeId: 1)
+                                      ,
                                         // Positioned for "offers" below "1024"
                                         Positioned(
                                           bottom: 40, // Position at the bottom
@@ -292,11 +321,14 @@ class _HomePageState extends State<HomePage>
                                             ),
                                           ),
                                           // Center the "1024" text
+                                    /**
                                           Text(
                                             "2212",
                                             style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.brown[300]),
                                             textAlign: TextAlign.center,
-                                          ),
+                                          )**/
+                                      CounterWidget1(typeId: 2)
+                                      ,
                                           // Positioned for "offers" below "1024"
                                           Positioned(
                                             bottom: 40, // Position at the bottom
@@ -319,10 +351,52 @@ class _HomePageState extends State<HomePage>
                     ),
                   ),
                 ])
-            ]),
-              Column(
+            ])),
+              SlideTransition(
+                  position: _slideAnimation3,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white, // Set the background color to white
+                  borderRadius: BorderRadius.circular(16), // Apply rounded corners
+                ),
+                child: Column(
                   children: [
-            ])
+                    Flexible(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GalleryContentWidget1(typeId: 3),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: GalleryContentWidget1(typeId: 2),
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: GalleryContentWidget1(typeId: 1),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: GalleryContentWidget1(typeId: 1),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ))
             ])
       )),
     );
