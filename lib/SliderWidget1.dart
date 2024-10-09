@@ -29,6 +29,8 @@ class _SliderWidget1State extends State<SliderWidget1>
 
   int id1 = 0;
 
+  double _opacity1 = 0.0;
+
   @override
   void initState() {
     super.initState();
@@ -103,6 +105,15 @@ class _SliderWidget1State extends State<SliderWidget1>
         Future.delayed(const Duration(milliseconds: 6000), () {
           if (mounted) {
             _controller5.forward();
+
+            // Simulate a delay before starting the fade-in effect
+            Future.delayed(Duration(milliseconds: delay), () {
+              if (mounted) {
+                setState(() {
+                  _opacity1 = 1.0;
+                });
+              }
+            });
           }
         });
       }
@@ -242,17 +253,15 @@ class _SliderWidget1State extends State<SliderWidget1>
             right: 0,
             child: Center(
                 child: Align(alignment: id1 == 1 ? Alignment.center : Alignment.centerLeft , child: Padding(padding: EdgeInsets.only(left: id1 == 1 ? 0: 5), child:
-
-    AnimatedBuilder(
-    animation: _animation5,
-    builder: (context, child) {
-    return Transform.scale(
-    scale: _animation5.value,
+    TweenAnimationBuilder(
+    tween: Tween<double>(begin: 0.0, end: _opacity1),
+    duration: const Duration(milliseconds: 300),
+    builder: (context, opacity, child) {
+    return Opacity(
+    opacity: opacity,
     child: Text(text1, textAlign: TextAlign.center));
     },
-    )
-                ))))
-      ],
+    )))))],
     );
   }
 }

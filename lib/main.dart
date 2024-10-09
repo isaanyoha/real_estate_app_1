@@ -1,8 +1,8 @@
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
-import "package:flutter/services.dart";
-import "HomePage.dart";
-import "SearchPage.dart";
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'HomePage.dart';
+import 'SearchPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Flutter Demo",
+      title: "Real Estate App",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
         useMaterial3: true,
@@ -41,23 +41,41 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   late AnimationController _animationController1;
-  
   late Animation<Offset> _animation1;
 
   int _selectedIndex = 0; // To track the selected index
 
-  // List of pages to display
+  // List of pages to display, each wrapped with a KeyedSubtree for reload functionality
   final List<Widget> _pages = [
-    HomePage(),
-    SearchPage(),
+    KeyedSubtree(key: UniqueKey(), child: HomePage()),
+    KeyedSubtree(key: UniqueKey(), child: SearchPage()),
   ];
 
-  // Method to handle index change
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index; // Update the selected index
-    });
+    if (_selectedIndex == index) {
+      // If the current page is tapped again, reload the page
+      setState(() {
+        _pages[_selectedIndex] = KeyedSubtree(
+          key: UniqueKey(),
+          child: _buildPage(_selectedIndex), // Rebuild the current page
+        );
+      });
+    } else {
+      setState(() {
+        _selectedIndex = index; // Update the selected index
+      });
+    }
   }
+
+// Helper function to build the pages
+  Widget _buildPage(int index) {
+    if (index == 0) {
+      return HomePage();
+    } else {
+      return SearchPage();
+    }
+  }
+
 
   @override
   void initState() {
@@ -129,9 +147,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             color: Colors.transparent,
                           ),
                           padding: const EdgeInsets.all(15.0), // Padding for the circle
-                          child: Icon(
+                          child: const Icon(
                             Icons.chat,
-                            color: Colors.orange[50],
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -143,9 +161,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             color: _selectedIndex == 0 ? Colors.orangeAccent : Colors.transparent,
                           ),
                           padding: const EdgeInsets.all(15.0), // Padding for the circle
-                          child: Icon(
+                          child: const Icon(
                             Icons.home,
-                            color: Colors.orange[50],
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -157,9 +175,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             color: Colors.transparent,
                           ),
                           padding: const EdgeInsets.all(15.0), // Padding for the circle
-                          child: Icon(
+                          child: const Icon(
                             CupertinoIcons.heart_fill,
-                            color: Colors.orange[50],
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -171,9 +189,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             color: Colors.transparent,
                           ),
                           padding: const EdgeInsets.all(15.0), // Padding for the circle
-                          child: Icon(
+                          child: const Icon(
                             CupertinoIcons.person_fill,
-                            color: Colors.orange[50],
+                            color: Colors.white,
                           ),
                         ),
                       ),
