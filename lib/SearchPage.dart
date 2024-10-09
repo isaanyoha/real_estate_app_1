@@ -291,16 +291,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       ),
     );
   }
+
   Widget _buildListItems() {
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
         color: Colors.orange[50],
         borderRadius: BorderRadius.circular(20),
       ),
-      height: 300, // Set a fixed height for the list container
-      child: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+      // Remove height constraint so that the container adapts to content
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical, // Scroll horizontally if needed
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // Align content to the start
           children: _items.asMap().entries.map((entry) {
             int index = entry.key;
             Map<String, dynamic> item = entry.value;
@@ -313,25 +316,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 await _listController.reverse();
                 _showList = false;
 
-                if (_selectedIndex == 3) {
-                  isIcon = true;
-                } else {
-                  isIcon = false;
-                }
+                isIcon = (_selectedIndex == 3);
 
                 setState(() {});
               },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 0),
-                child: ListTile(
-                  leading: Icon(
-                    item['icon'],
-                    color: isSelected ? Colors.orange : Colors.black45,
-                  ),
-                  title: Text(
-                    item['title'],
-                    style: TextStyle(color: isSelected ? Colors.orange : Colors.black45),
-                  ),
+              child: ListTile(
+                leading: Icon(
+                  item['icon'],
+                  color: isSelected ? Colors.orange : Colors.black45,
+                ),
+                title: Text(
+                  item['title'],
+                  style: TextStyle(color: isSelected ? Colors.orange : Colors.black45),
                 ),
               ),
             );
@@ -340,4 +336,5 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       ),
     );
   }
+
 }

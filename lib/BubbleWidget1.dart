@@ -19,19 +19,42 @@ class BubbleWidget1 extends StatefulWidget {
 class _BubbleWidget1State extends State<BubbleWidget1> {
   int id1 = 0;
   bool isIcon = false; // Flag to determine whether to show an icon
-  double _opacity = 0.0;
+  double _opacity = 1.0;
+  bool _showNewContent = false;
 
   @override
   void initState() {
     super.initState();
-    id1 = widget.id1 ?? 1; // Set default id1 to 1 if null
-    isIcon = widget.isIcon ?? false; // Initialize isIcon
+    isIcon = widget.isIcon ?? false;
 
-    // Simulate a delay before starting the fade-in effect
-    Future.delayed(Duration(milliseconds: 1500), () {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleOpacityChange();
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant BubbleWidget1 oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Check if isIcon has changed
+    if (oldWidget.isIcon != widget.isIcon) {
+      _handleOpacityChange();
+    }
+  }
+
+  void _handleOpacityChange() {
+    // Step 1: Fade out the old content
+    setState(() {
+      _opacity = 0.0;
+    });
+
+    // Step 2: Wait for the fade out to complete, then switch content and fade in
+    Future.delayed(Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
-          _opacity = 1.0;
+          isIcon = widget.isIcon ?? false;
+          _showNewContent = true; // Show new content after fade-out
+          _opacity = 1.0; // Fade in the new content
         });
       }
     });
@@ -42,7 +65,6 @@ class _BubbleWidget1State extends State<BubbleWidget1> {
     String text1 = "";
 
     id1 = widget.id1 ?? 1;
-    isIcon = widget.isIcon ?? false;
 
     if (id1 == 1) {
       text1 = "10.3";
@@ -61,40 +83,41 @@ class _BubbleWidget1State extends State<BubbleWidget1> {
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Stack(
-        alignment: Alignment.center, // Center align children within the Stack
+        alignment: Alignment.center,
         children: [
-          // Animated container to manage width change
           AnimatedContainer(
-            duration: const Duration(milliseconds: 300), // Animation duration
-            width: isIcon ? 40 : 60, // Adjust the width based on isIcon
-            height: 40, // Fixed height for the chat bubble
+            duration: const Duration(milliseconds: 300),
+            width: isIcon ? 40 : 60,
+            height: 40,
             decoration: BoxDecoration(
               color: Colors.orange,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15), // Rounded top-left
-                topRight: Radius.circular(15), // Rounded top-right
-                bottomRight: Radius.circular(15), // Rounded bottom-right
-                bottomLeft: Radius.zero, // No radius for bottom-left
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+                bottomLeft: Radius.zero,
               ),
             ),
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 10), // Adjust bottom padding if necessary
+                padding: const EdgeInsets.only(bottom: 10),
                 child: TweenAnimationBuilder<double>(
                   tween: Tween<double>(begin: 0.0, end: _opacity),
                   duration: const Duration(milliseconds: 300),
                   builder: (context, opacity, child) {
                     return Opacity(
                       opacity: opacity,
-                      child: isIcon
-                          ? Icon(Icons.house, color: Colors.white, size: 20) // Show icon if isIcon is true
+                      child: _showNewContent
+                          ? (isIcon
+                          ? Icon(Icons.house, color: Colors.white, size: 20)
                           : Text(
                         text1 + " P",
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 12,
                             fontWeight: FontWeight.w900),
-                      ), // Show text if isIcon is false
+                      ))
+                          : null, // Show nothing during fade out
                     );
                   },
                 ),
