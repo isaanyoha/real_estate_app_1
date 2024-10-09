@@ -33,12 +33,12 @@ class _HomePageState extends State<HomePage>
     );
 
     _controller2 = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 800),
       vsync: this,
     );
 
     _controller3 = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 800),
       vsync: this,
     );
 
