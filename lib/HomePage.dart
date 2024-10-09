@@ -18,7 +18,9 @@ class _HomePageState extends State<HomePage>
   late Animation<double> _roundedScaleAnimation1;
   late Animation<double> _roundedScaleAnimation2;
 
-  double _opacity = 0.0;
+  double _opacity1 = 0.0;
+  double _opacity2 = 0.0;
+
   late Animation<Offset> _slideAnimation1;
   late Animation<Offset> _slideAnimation2;
   late Animation<Offset> _slideAnimation3;
@@ -74,10 +76,19 @@ class _HomePageState extends State<HomePage>
     );
 
     // Simulate a delay before starting the fade-in effect
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(Duration(milliseconds: 1000), () {
       if (mounted) {
         setState(() {
-          _opacity = 1.0;
+          _opacity1 = 1.0;
+        });
+      }
+    });
+
+    // Simulate a delay before starting the fade-in effect
+    Future.delayed(Duration(milliseconds: 1700), () {
+      if (mounted) {
+        setState(() {
+          _opacity2 = 1.0;
         });
       }
     });
@@ -106,11 +117,13 @@ class _HomePageState extends State<HomePage>
       curve: Curves.easeInOut,
     ));
 
+    if (mounted) {
+      _controller1.forward();
+    }
+
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        _controller1.forward();
-
         Future.delayed(Duration(milliseconds: 2000), () {
           if (mounted) {
             _controller2.forward();
@@ -182,7 +195,7 @@ class _HomePageState extends State<HomePage>
                     ),
                     child:
                     TweenAnimationBuilder(
-                      tween: Tween<double>(begin: 0.0, end: _opacity),
+                      tween: Tween<double>(begin: 0.0, end: _opacity1),
                       duration: const Duration(milliseconds: 500),
                       builder: (context, opacity, child) {
                         return Opacity(
@@ -220,7 +233,7 @@ class _HomePageState extends State<HomePage>
             children:[
               Row(children:[
           TweenAnimationBuilder(
-            tween: Tween<double>(begin: 0.0, end: _opacity),
+            tween: Tween<double>(begin: 0.0, end: _opacity2),
             duration: const Duration(milliseconds: 0),
             builder: (context, opacity, child) {
               return Opacity(

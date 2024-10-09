@@ -11,6 +11,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   late Animation<double> _roundedScaleAnimation1;
   late AnimationController _listController;
   late Animation<double> _listScaleAnimation;
+  late Animation<double> _bubbleScaleAnimation;
   late AnimationController _bubbleController; // New animation controller
   bool _showList = false;
   IconData _floatingIcon = Icons.wallet;
@@ -68,9 +69,16 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       vsync: this,
     );
 
+    _bubbleScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _bubbleController,
+        curve: Curves.easeOut,
+      ),
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller1.forward();
-      Future.delayed(Duration(milliseconds: 500), () {
+      Future.delayed(Duration(milliseconds: 600), () {
         if (mounted) {
           _bubbleController.forward();
         }
@@ -118,7 +126,25 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               return Positioned(
                 left: offset.dx,
                 top: offset.dy,
-                child: ScaleTransition(
+                child: AnimatedBuilder(
+                    animation: _bubbleScaleAnimation,
+                    builder: (context, child) {
+                      return Transform(
+                        transform: Matrix4.identity()
+                          ..translate(-10 * (1 - _bubbleScaleAnimation.value), -10 * (1 - _bubbleScaleAnimation.value))
+                          ..scale(_bubbleScaleAnimation.value),
+                        alignment: Alignment.bottomLeft,
+                        child: BubbleWidget1(
+                          id1: _bubblePositions.indexOf(offset) + 1, // Assign id based on index
+                          animationController: _bubbleController,
+                          isIcon: isIcon,
+                        ),
+                      );
+                    },
+                  )
+
+                /**
+                ScaleTransition(
                   scale: CurvedAnimation(
                     parent: _bubbleController,
                     curve: Curves.easeOut,
@@ -129,27 +155,38 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     isIcon: isIcon,
                   ),
                 ),
+                **/
               );
             }).toList(),
             // Search TextField positioned to the left
             Positioned(
               top: 20,
               left: 20,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "Saint Petersburg",
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                      borderSide: BorderSide.none,
-                    ),
-                    prefixIcon: const Icon(Icons.search),
-                  ),
-                ),
-              ),
+              child:
+
+              AnimatedBuilder(
+              animation: _roundedScaleAnimation1,
+              builder: (context, child) {
+    return Transform.scale(
+    scale: _roundedScaleAnimation1.value,
+    child: SizedBox(
+      width: MediaQuery.of(context).size.width * 0.7,
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: "Saint Petersburg",
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(50.0),
+            borderSide: BorderSide.none,
+          ),
+          prefixIcon: const Icon(Icons.search),
+        ),
+      ),
+    ),
+    );
+    },
+    ),
             ),
             // Settings icon positioned at the top right
             Positioned(
