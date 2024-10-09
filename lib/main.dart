@@ -133,9 +133,9 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                             color: _selectedIndex == 1 ? Colors.orangeAccent : Colors.transparent,
                           ),
                           padding: const EdgeInsets.all(15.0), // Padding for the circle
-                          child: Icon(
+                          child: const Icon(
                             CupertinoIcons.search,
-                            color: Colors.orange[50],
+                            color: Colors.white,
                           ),
                         ),
                       ),
