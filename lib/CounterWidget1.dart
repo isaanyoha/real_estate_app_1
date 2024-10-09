@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class CounterWidget1 extends StatefulWidget {
   final int? typeId;
@@ -59,7 +59,7 @@ class _CounterWidget1State extends State<CounterWidget1> {
       builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (snapshot.hasError) {
           return Text(
-            'Error',
+            "Error",
             style: textStyle,
             textAlign: TextAlign.center,
           );

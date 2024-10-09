@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class SliderWidget1 extends StatefulWidget {
   final int? id1;
@@ -185,7 +185,7 @@ class _SliderWidget1State extends State<SliderWidget1>
               scale: _animation2.value, // Apply the scale animation to the container
               child: Container(
                 padding: const EdgeInsets.only(top: 3, bottom: 3, left: 4, right: 4),
-                width: _animation4.value, // Animate the container's width
+                width: _animation4.value, // Animate the container"s width
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(25), // Adjust for roundness
@@ -204,7 +204,7 @@ class _SliderWidget1State extends State<SliderWidget1>
                           return Transform.scale(
                             scale: _animation1.value,
                             child: Container(
-                              width: 40, // Set width and height to ensure it's a circle
+                              width: 40, // Set width and height to ensure it"s a circle
                               height: 40,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,

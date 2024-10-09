@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'BubbleWidget1.dart'; // Ensure this import matches your file structure
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "BubbleWidget1.dart"; // Ensure this import matches your file structure
 
 class SearchPage extends StatefulWidget {
   @override
@@ -21,10 +21,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   int? _selectedIndex = 1;
 
   final List<Map<String, dynamic>> _items = [
-    {'icon': Icons.safety_check_outlined, 'title': 'Cosy areas'},
-    {'icon': Icons.wallet, 'title': 'Price'},
-    {'icon': Icons.shopping_basket, 'title': 'Infrastructure'},
-    {'icon': Icons.layers, 'title': 'Without any Layer'},
+    {"icon": Icons.safety_check_outlined, "title": "Cosy areas"},
+    {"icon": Icons.wallet, "title": "Price"},
+    {"icon": Icons.shopping_basket, "title": "Infrastructure"},
+    {"icon": Icons.layers, "title": "Without any Layer"},
   ];
 
   // List of positions for the BubbleWidgets
@@ -338,7 +338,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             return GestureDetector(
               onTap: () async {
                 _selectedIndex = index;
-                _floatingIcon = item['icon'];
+                _floatingIcon = item["icon"];
                 await _animationController2.reverse();
                 _showList = false;
 
@@ -348,11 +348,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               },
               child: ListTile(
                 leading: Icon(
-                  item['icon'],
+                  item["icon"],
                   color: isSelected ? Colors.orange : Colors.black45,
                 ),
                 title: Text(
-                  item['title'],
+                  item["title"],
                   style: TextStyle(color: isSelected ? Colors.orange : Colors.black45),
                 ),
               ),
@@ -362,5 +362,4 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       ),
     );
   }
-
 }

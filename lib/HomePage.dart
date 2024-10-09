@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:real_estate_app_1/CounterWidget1.dart';
-import 'package:real_estate_app_1/GalleryContentWidget1.dart';
+import "package:flutter/material.dart";
+import "package:real_estate_app_1/CounterWidget1.dart";
+import "package:real_estate_app_1/GalleryContentWidget1.dart";
 
 class HomePage extends StatefulWidget {
   @override

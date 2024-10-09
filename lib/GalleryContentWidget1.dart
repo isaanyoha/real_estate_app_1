@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:real_estate_app_1/SliderWidget1.dart';
+import "package:flutter/material.dart";
+import "package:real_estate_app_1/SliderWidget1.dart";
 
 class GalleryContentWidget1 extends StatefulWidget {
   final int? id1;
@@ -40,7 +40,7 @@ class _GalleryContentWidget1State extends State<GalleryContentWidget1> {
         decoration: BoxDecoration(
           borderRadius: commonBorderRadius, // Apply rounded corners
           image: const DecorationImage(
-            image: AssetImage('assets/images/r_h_1.jpeg'), // Replace with your image path
+            image: AssetImage("assets/images/r_h_1.jpeg"), // Replace with your image path
             fit: BoxFit.cover,
           ),
         ),
@@ -51,7 +51,7 @@ class _GalleryContentWidget1State extends State<GalleryContentWidget1> {
     decoration: BoxDecoration(
     borderRadius: commonBorderRadius, // Apply rounded corners
     image: const DecorationImage(
-    image: AssetImage('assets/images/r_v_1.jpeg'), // Replace with your image path
+    image: AssetImage("assets/images/r_v_1.jpeg"), // Replace with your image path
     fit: BoxFit.cover,
     ),
     ),

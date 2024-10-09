@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'HomePage.dart';
-import 'SearchPage.dart';
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "HomePage.dart";
+import "SearchPage.dart";
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +14,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: "Flutter Demo",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
         useMaterial3: true,
-        fontFamily: 'CustomFontWithFallback',
+        fontFamily: "CustomFontWithFallback",
       ),
       home: const MainPage(), // Set MainPage as home
     );
