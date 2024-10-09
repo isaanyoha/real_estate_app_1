@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage>
               Row(children:[
           TweenAnimationBuilder(
             tween: Tween<double>(begin: 0.0, end: _opacity2),
-            duration: const Duration(milliseconds: 0),
+            duration: const Duration(milliseconds: 300),
             builder: (context, opacity, child) {
               return Opacity(
                 opacity: opacity,
