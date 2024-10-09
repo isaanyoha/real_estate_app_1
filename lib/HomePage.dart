@@ -9,74 +9,74 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin {
-  late AnimationController _controller1;
-  late AnimationController _controller2;
-  late AnimationController _controller3;
-  late AnimationController _controller4;
-  late AnimationController _controller5;
-  late Animation<double> _rectangleAnimation;
-  late Animation<double> _roundedScaleAnimation1;
-  late Animation<double> _roundedScaleAnimation2;
+  late AnimationController _animationController1;
+  late AnimationController _animationController2;
+  late AnimationController _animationController3;
+  late AnimationController _animationController4;
+  late AnimationController _animationController5;
+  
+  late Animation<double> _animation1;
+  late Animation<double> _animation2;
+  late Animation<double> _animation3;
+  late Animation<Offset> _animation4;
+  late Animation<Offset> _animation5;
+  late Animation<Offset> _animation6;
 
   double _opacity1 = 0.0;
   double _opacity2 = 0.0;
-
-  late Animation<Offset> _slideAnimation1;
-  late Animation<Offset> _slideAnimation2;
-  late Animation<Offset> _slideAnimation3;
 
   @override
   void initState() {
     super.initState();
 
-    _controller1 = AnimationController(
-      duration: Duration(milliseconds: 500),
+    _animationController1 = AnimationController(
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
-    _controller2 = AnimationController(
-      duration: Duration(milliseconds: 800),
+    _animationController2 = AnimationController(
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
-    _controller3 = AnimationController(
-      duration: Duration(milliseconds: 800),
+    _animationController3 = AnimationController(
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
 
-    _controller4 = AnimationController(
-      duration: Duration(milliseconds: 1000),
+    _animationController4 = AnimationController(
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
-    _controller5 = AnimationController(
-      duration: Duration(milliseconds: 1000),
+    _animationController5 = AnimationController(
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
-    _rectangleAnimation = Tween<double>(begin: -100, end: 0).animate(
+    _animation1 = Tween<double>(begin: -100, end: 0).animate(
       CurvedAnimation(
-        parent: _controller1,
+        parent: _animationController1,
         curve: Curves.easeIn,
       ),
     );
 
-    _roundedScaleAnimation1 = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _animation2 = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller1,
+        parent: _animationController1,
         curve: Curves.easeOut,
       ),
     );
 
-    _roundedScaleAnimation2 = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _animation3 = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller4,
+        parent: _animationController4,
         curve: Curves.easeOut,
       ),
     );
 
     // Simulate a delay before starting the fade-in effect
-    Future.delayed(Duration(milliseconds: 1000), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       if (mounted) {
         setState(() {
           _opacity1 = 1.0;
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage>
     });
 
     // Simulate a delay before starting the fade-in effect
-    Future.delayed(Duration(milliseconds: 1700), () {
+    Future.delayed(const Duration(milliseconds: 1700), () {
       if (mounted) {
         setState(() {
           _opacity2 = 1.0;
@@ -93,58 +93,58 @@ class _HomePageState extends State<HomePage>
       }
     });
 
-    _slideAnimation1 = Tween<Offset>(
-      begin: Offset(0.0, 1.0), // Start from below
+    _animation4 = Tween<Offset>(
+      begin: const Offset(0.0, 1.0), // Start from below
       end: Offset.zero, // End at its original position
     ).animate(CurvedAnimation(
-      parent: _controller2,
+      parent: _animationController2,
       curve: Curves.easeInOut,
     ));
 
-    _slideAnimation2 = Tween<Offset>(
-      begin: Offset(0.0, 1.0), // Start from below
+    _animation5 = Tween<Offset>(
+      begin: const Offset(0.0, 1.0), // Start from below
       end: Offset.zero, // End at its original position
     ).animate(CurvedAnimation(
-      parent: _controller3,
+      parent: _animationController3,
       curve: Curves.easeInOut,
     ));
 
-    _slideAnimation3 = Tween<Offset>(
-      begin: Offset(0.0, 1.0), // Start from below
+    _animation6 = Tween<Offset>(
+      begin: const Offset(0.0, 1.0), // Start from below
       end: Offset.zero, // End at its original position
     ).animate(CurvedAnimation(
-      parent: _controller5,
+      parent: _animationController5,
       curve: Curves.easeInOut,
     ));
 
     if (mounted) {
-      _controller1.forward();
+      _animationController1.forward();
     }
 
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        Future.delayed(Duration(milliseconds: 2000), () {
+        Future.delayed(const Duration(milliseconds: 1500), () {
           if (mounted) {
-            _controller2.forward();
+            _animationController2.forward();
           }
         });
 
-        Future.delayed(Duration(milliseconds: 2100), () {
+        Future.delayed(const Duration(milliseconds: 2000), () {
           if (mounted) {
-            _controller3.forward();
+            _animationController3.forward();
           }
         });
 
-        Future.delayed(Duration(milliseconds: 2600), () {
+        Future.delayed(const Duration(milliseconds: 2600), () {
           if (mounted) {
-            _controller4.forward();
+            _animationController4.forward();
           }
         });
 
-        Future.delayed(Duration(milliseconds: 3800), () {
+        Future.delayed(const Duration(milliseconds: 3800), () {
           if (mounted) {
-            _controller5.forward();
+            _animationController5.forward();
           }
         });
       }
@@ -153,11 +153,12 @@ class _HomePageState extends State<HomePage>
 
   @override
   void dispose() {
-    _controller1.dispose();
-    _controller2.dispose();
-    _controller3.dispose();
-    _controller4.dispose();
-    _controller5.dispose();
+    _animationController1.dispose();
+    _animationController2.dispose();
+    _animationController3.dispose();
+    _animationController4.dispose();
+    _animationController5.dispose();
+
     super.dispose();
   }
 
@@ -165,7 +166,7 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.white70, Colors.orangeAccent], // Add your two colors here
               begin: Alignment.topLeft,
@@ -176,17 +177,17 @@ class _HomePageState extends State<HomePage>
         child: Stack(
             children: [
               Container(
-                  padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
                   child: SingleChildScrollView(child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AnimatedBuilder(
-              animation: _rectangleAnimation,
+              animation: _animation1,
               builder: (context, child) {
                 return Transform.translate(
-                  offset: Offset(_rectangleAnimation.value, 0),
+                  offset: Offset(_animation1.value, 0),
                   child: Container(
                     padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
@@ -211,10 +212,10 @@ class _HomePageState extends State<HomePage>
               },
             ), // Space between the widgets
             AnimatedBuilder(
-              animation: _roundedScaleAnimation1,
+              animation: _animation2,
               builder: (context, child) {
                 return Transform.scale(
-                  scale: _roundedScaleAnimation1.value,
+                  scale: _animation2.value,
                   child: CircleAvatar(
                   child: ClipOval(
                   child: Image.asset(
@@ -228,7 +229,7 @@ class _HomePageState extends State<HomePage>
             )
           ],
         ),
-        Padding(padding: EdgeInsets.only(top: 30, bottom: 30),
+        Padding(padding: const EdgeInsets.only(top: 30, bottom: 30),
         child: Column(
             children:[
               Row(children:[
@@ -249,20 +250,20 @@ class _HomePageState extends State<HomePage>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SlideTransition(
-                      position: _slideAnimation1,
+                      position: _animation4,
                       child: FadeTransition(
-                        opacity: _controller2.drive(CurveTween(curve: Curves.easeIn)),
-                        child: Text(
+                        opacity: _animationController2.drive(CurveTween(curve: Curves.easeIn)),
+                        child: const Text(
                           "let's select your",
                           style: TextStyle(fontSize: 35),
                         ),
                       ),
                     ),
                     SlideTransition(
-                      position: _slideAnimation2,
+                      position: _animation5,
                       child: FadeTransition(
-                        opacity: _controller3.drive(CurveTween(curve: Curves.easeIn)),
-                        child: Text(
+                        opacity: _animationController3.drive(CurveTween(curve: Curves.easeIn)),
+                        child: const Text(
                           "perfect place",
                           style: TextStyle(fontSize: 35),
                         ),
@@ -281,14 +282,14 @@ class _HomePageState extends State<HomePage>
                         // Left: Circle
                         Expanded(
                           child: AnimatedBuilder(
-                            animation: _roundedScaleAnimation2,
+                            animation: _animation3,
                             builder: (context, child) {
                               return Transform.scale(
-                                scale: _roundedScaleAnimation2.value,
+                                scale: _animation3.value,
                                 child: AspectRatio(
                                   aspectRatio: 1, // Aspect ratio of 1:1 to ensure a square or circle
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       color: Colors.orangeAccent,
                                       shape: BoxShape.circle, // Makes the container a circle
                                     ),
@@ -330,14 +331,14 @@ class _HomePageState extends State<HomePage>
                             },
                           ),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         // Right: Rounded-corner square
                         Expanded(
                           child: AnimatedBuilder(
-                            animation: _roundedScaleAnimation2,
+                            animation: _animation3,
                             builder: (context, child) {
                               return Transform.scale(
-                                scale: _roundedScaleAnimation2.value,
+                                scale: _animation3.value,
                                 child: AspectRatio(
                                   aspectRatio: 1, // Aspect ratio of 1:1 to ensure a square
                                   child: Container(
@@ -391,14 +392,14 @@ class _HomePageState extends State<HomePage>
                 ])
             ]))),
               SlideTransition(
-                  position: _slideAnimation3,
+                  position: _animation6,
                   child: Container(
                     margin: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   color: Colors.white, // Set the background color to white
                   borderRadius: BorderRadius.circular(20), // Apply rounded corners
                 ),
-                child: Column(
+                child: const Column(
                   children: [
                     Flexible(
                       child: Row(

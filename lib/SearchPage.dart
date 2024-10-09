@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'BubbleWidget1.dart'; // Ensure this import matches your file structure
 
@@ -7,12 +8,14 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
-  late AnimationController _controller1;
-  late Animation<double> _roundedScaleAnimation1;
-  late AnimationController _listController;
-  late Animation<double> _listScaleAnimation;
-  late Animation<double> _bubbleScaleAnimation;
-  late AnimationController _bubbleController; // New animation controller
+  late AnimationController _animationController1;
+  late AnimationController _animationController2;
+  late AnimationController _animationController3;
+  
+  late Animation<double> _animation1;
+  late Animation<double> _animation2;
+  late Animation<double> _animation3;
+  
   bool _showList = false;
   IconData _floatingIcon = Icons.wallet;
   int? _selectedIndex = 1;
@@ -26,12 +29,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   // List of positions for the BubbleWidgets
   final List<Offset> _bubblePositions = [
-    Offset(100, 100),
-    Offset(200, 200),
-    Offset(300, 100),
-    Offset(100, 300),
-    Offset(200, 400),
-    Offset(300, 300),
+    const Offset(100, 100),
+    const Offset(200, 200),
+    const Offset(300, 100),
+    const Offset(100, 300),
+    const Offset(200, 400),
+    const Offset(300, 300),
   ];
 
   bool isIcon = false;
@@ -40,47 +43,47 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _controller1 = AnimationController(
-      duration: Duration(milliseconds: 500),
+    _animationController1 = AnimationController(
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
-    _roundedScaleAnimation1 = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _animation1 = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller1,
+        parent: _animationController1,
         curve: Curves.easeOut,
       ),
     );
 
-    _listController = AnimationController(
-      duration: Duration(milliseconds: 300),
+    _animationController2 = AnimationController(
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
-    _listScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _animation2 = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _listController,
+        parent: _animationController2,
         curve: Curves.easeOut,
       ),
     );
 
-    _bubbleController = AnimationController(
-      duration: Duration(milliseconds: 500),
+    _animationController3 = AnimationController(
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
-    _bubbleScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _animation3 = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _bubbleController,
+        parent: _animationController3,
         curve: Curves.easeOut,
       ),
     );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller1.forward();
-      Future.delayed(Duration(milliseconds: 600), () {
+      _animationController1.forward();
+      Future.delayed(const Duration(milliseconds: 600), () {
         if (mounted) {
-          _bubbleController.forward();
+          _animationController3.forward();
         }
       });
     });
@@ -88,15 +91,16 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller1.dispose();
-    _listController.dispose();
-    _bubbleController.dispose(); // Dispose the bubble controller
+    _animationController1.dispose();
+    _animationController2.dispose();
+    _animationController3.dispose();
+
     super.dispose();
   }
 
   Future<void> _hideList() async {
     if (_showList) {
-      await _listController.reverse();
+      await _animationController2.reverse();
       setState(() {
         _showList = false;
       });
@@ -114,7 +118,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             Container(
               height: double.infinity,
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage("assets/images/google_map_view_1.jpeg"), // Replace with your asset image path
                   fit: BoxFit.cover,
@@ -127,37 +131,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 left: offset.dx,
                 top: offset.dy,
                 child: AnimatedBuilder(
-                    animation: _bubbleScaleAnimation,
+                    animation: _animation3,
                     builder: (context, child) {
                       return Transform(
                         transform: Matrix4.identity()
-                          ..translate(-10 * (1 - _bubbleScaleAnimation.value), -10 * (1 - _bubbleScaleAnimation.value))
-                          ..scale(_bubbleScaleAnimation.value),
+                          ..translate(-10 * (1 - _animation3.value), -10 * (1 - _animation3.value))
+                          ..scale(_animation3.value),
                         alignment: Alignment.bottomLeft,
                         child: BubbleWidget1(
-                          id1: _bubblePositions.indexOf(offset) + 1, // Assign id based on index
-                          animationController: _bubbleController,
+                          id1: _bubblePositions.indexOf(offset) + 1,
                           isIcon: isIcon,
                         ),
                       );
                     },
                   )
-
-                /**
-                ScaleTransition(
-                  scale: CurvedAnimation(
-                    parent: _bubbleController,
-                    curve: Curves.easeOut,
-                  ),
-                  child: BubbleWidget1(
-                    id1: _bubblePositions.indexOf(offset) + 1, // Assign id based on index
-                    animationController: _controller1,
-                    isIcon: isIcon,
-                  ),
-                ),
-                **/
               );
-            }).toList(),
+            }),
             // Search TextField positioned to the left
             Positioned(
               top: 20,
@@ -165,10 +154,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               child:
 
               AnimatedBuilder(
-              animation: _roundedScaleAnimation1,
+              animation: _animation1,
               builder: (context, child) {
     return Transform.scale(
-    scale: _roundedScaleAnimation1.value,
+    scale: _animation1.value,
     child: SizedBox(
       width: MediaQuery.of(context).size.width * 0.7,
       child: TextField(
@@ -180,7 +169,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(50.0),
             borderSide: BorderSide.none,
           ),
-          prefixIcon: const Icon(Icons.search),
+          prefixIcon: const Icon(CupertinoIcons.search),
         ),
       ),
     ),
@@ -193,10 +182,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               top: 20,
               right: 20,
               child: AnimatedBuilder(
-                animation: _roundedScaleAnimation1,
+                animation: _animation1,
                 builder: (context, child) {
                   return Transform.scale(
-                    scale: _roundedScaleAnimation1.value,
+                    scale: _animation1.value,
                     child: Container(
                       width: 50,
                       height: 50,
@@ -220,18 +209,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 children: [
                   Stack(children: [
                     AnimatedBuilder(
-                      animation: _roundedScaleAnimation1,
+                      animation: _animation1,
                       builder: (context, child) {
                         return Transform.scale(
-                          scale: _roundedScaleAnimation1.value,
+                          scale: _animation1.value,
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
                                 _showList = !_showList; // Toggle the list visibility
                                 if (_showList) {
-                                  _listController.forward(); // Start showing the list with animation
+                                  _animationController2.forward(); // Start showing the list with animation
                                 } else {
-                                  _listController.reverse(); // Start hiding the list with animation
+                                  _animationController2.reverse(); // Start hiding the list with animation
                                 }
                               });
                             },
@@ -251,10 +240,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   ]),
                   const SizedBox(height: 5),
                   AnimatedBuilder(
-                    animation: _roundedScaleAnimation1,
+                    animation: _animation1,
                     builder: (context, child) {
                       return Transform.scale(
-                        scale: _roundedScaleAnimation1.value,
+                        scale: _animation1.value,
                         child: Container(
                           width: 50,
                           height: 50,
@@ -277,10 +266,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               bottom: 100,
               right: 20,
               child: AnimatedBuilder(
-                animation: _roundedScaleAnimation1,
+                animation: _animation1,
                 builder: (context, child) {
                   return Transform.scale(
-                    scale: _roundedScaleAnimation1.value,
+                    scale: _animation1.value,
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.5),
@@ -310,12 +299,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 child: SizedBox(
                   width: 200, // Set a width for the list
                   child: AnimatedBuilder(
-                    animation: _listScaleAnimation,
+                    animation: _animation2,
                     builder: (context, child) {
                       return Transform(
                         transform: Matrix4.identity()
-                          ..translate(-10 * (1 - _listScaleAnimation.value), -10 * (1 - _listScaleAnimation.value))
-                          ..scale(_listScaleAnimation.value),
+                          ..translate(-10 * (1 - _animation2.value), -10 * (1 - _animation2.value))
+                          ..scale(_animation2.value),
                         alignment: Alignment.bottomLeft,
                         child: _buildListItems(),
                       );
@@ -350,7 +339,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               onTap: () async {
                 _selectedIndex = index;
                 _floatingIcon = item['icon'];
-                await _listController.reverse();
+                await _animationController2.reverse();
                 _showList = false;
 
                 isIcon = (_selectedIndex == 3);

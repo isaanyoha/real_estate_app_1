@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 
 class BubbleWidget1 extends StatefulWidget {
   final int? id1;
-  final AnimationController? animationController;
   final bool? isIcon;
 
   BubbleWidget1({
     Key? key,
     this.id1,
-    this.animationController,
     this.isIcon,
   }) : super(key: key);
 
@@ -28,7 +26,7 @@ class _BubbleWidget1State extends State<BubbleWidget1> {
     isIcon = widget.isIcon ?? false;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(milliseconds: 600), () {
+      Future.delayed(const Duration(milliseconds: 700), () {
         if (mounted) {
           _handleOpacityChange();
         }
@@ -53,7 +51,7 @@ class _BubbleWidget1State extends State<BubbleWidget1> {
     });
 
     // Step 2: Wait for the fade out to complete, then switch content and fade in
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
           isIcon = widget.isIcon ?? false;
@@ -93,7 +91,7 @@ class _BubbleWidget1State extends State<BubbleWidget1> {
             duration: const Duration(milliseconds: 300),
             width: isIcon ? 40 : 60,
             height: 40,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.orange,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15),
@@ -113,7 +111,7 @@ class _BubbleWidget1State extends State<BubbleWidget1> {
                       opacity: opacity,
                       child: _showNewContent
                           ? (isIcon
-                          ? Icon(Icons.grid_on_sharp, color: Colors.white, size: 20)
+                          ? const Icon(Icons.grid_on_sharp, color: Colors.white, size: 20)
                           : Text(
                         text1 + " P",
                         style: const TextStyle(

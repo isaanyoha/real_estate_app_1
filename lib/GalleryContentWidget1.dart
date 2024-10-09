@@ -3,12 +3,10 @@ import 'package:real_estate_app_1/SliderWidget1.dart';
 
 class GalleryContentWidget1 extends StatefulWidget {
   final int? id1;
-  final AnimationController? animationController;
 
-  GalleryContentWidget1({
+  const GalleryContentWidget1({
     Key? key,
     this.id1,
-    this.animationController,
   }) : super(key: key);
 
   @override
@@ -41,7 +39,7 @@ class _GalleryContentWidget1State extends State<GalleryContentWidget1> {
       imageWidget = Container(
         decoration: BoxDecoration(
           borderRadius: commonBorderRadius, // Apply rounded corners
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage('assets/images/r_h_1.jpeg'), // Replace with your image path
             fit: BoxFit.cover,
           ),
@@ -52,7 +50,7 @@ class _GalleryContentWidget1State extends State<GalleryContentWidget1> {
     imageWidget = Container(
     decoration: BoxDecoration(
     borderRadius: commonBorderRadius, // Apply rounded corners
-    image: DecorationImage(
+    image: const DecorationImage(
     image: AssetImage('assets/images/r_v_1.jpeg'), // Replace with your image path
     fit: BoxFit.cover,
     ),
@@ -80,7 +78,7 @@ class _GalleryContentWidget1State extends State<GalleryContentWidget1> {
     }
 
       return Padding(
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       child: Stack(
         children: [
           Center(child: imageWidget), // Center the image in the Stack
@@ -89,7 +87,7 @@ class _GalleryContentWidget1State extends State<GalleryContentWidget1> {
             bottom: 0, // Position the slider at the bottom
             left: 0, // Align to the left edge
             right: 0, // Align to the right edge
-            child: Padding(padding: EdgeInsets.only(left: 10, bottom: 10),
+            child: Padding(padding: const EdgeInsets.only(left: 10, bottom: 10),
                 child:SliderWidget1(id1: id1)), // The Slider widget now stretches to full width
           ),
         ],

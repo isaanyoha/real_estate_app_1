@@ -1,6 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'HomePage.dart'; // Ensure you have a HomePage.dart file
-import 'SearchPage.dart'; // Ensure you have a SearchPage.dart file
+import 'HomePage.dart';
+import 'SearchPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'CustomFontWithFallback',
       ),
-      home: MainPage(), // Set MainPage as home
+      home: const MainPage(), // Set MainPage as home
     );
   }
 }
@@ -32,7 +33,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
-  late AnimationController _controller1;
+  late AnimationController _animationController1;
+  
   late Animation<Offset> _animation1;
 
   int _selectedIndex = 0; // To track the selected index
@@ -54,22 +56,22 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    _controller1 = AnimationController(
-      duration: Duration(milliseconds: 1000),
+    _animationController1 = AnimationController(
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
     _animation1 = Tween<Offset>(
-      begin: Offset(0.0, 1.0), // Start from below
+      begin: const Offset(0.0, 1.0), // Start from below
       end: Offset.zero, // End at its original position
     ).animate(CurvedAnimation(
-      parent: _controller1,
+      parent: _animationController1,
       curve: Curves.easeInOut,
     ));
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(milliseconds: 7000), () {
-        _controller1.forward();
+      Future.delayed(const Duration(milliseconds: 7000), () {
+        _animationController1.forward();
       });
     });
   }
@@ -87,7 +89,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             child: SlideTransition(
               position: _animation1,
               child: FadeTransition(
-                opacity: _controller1.drive(CurveTween(curve: Curves.easeIn)),
+                opacity: _animationController1.drive(CurveTween(curve: Curves.easeIn)),
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
@@ -107,7 +109,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                           ),
                           padding: const EdgeInsets.all(15.0), // Padding for the circle
                           child: Icon(
-                            Icons.search,
+                            CupertinoIcons.search,
                             color: Colors.orange[50],
                           ),
                         ),
@@ -115,7 +117,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       GestureDetector(
                         onTap: () {},
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.transparent,
                           ),
@@ -143,13 +145,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       GestureDetector(
                         onTap: () {},
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.transparent,
                           ),
                           padding: const EdgeInsets.all(15.0), // Padding for the circle
                           child: Icon(
-                            Icons.heart_broken,
+                            CupertinoIcons.heart_fill,
                             color: Colors.orange[50],
                           ),
                         ),
@@ -157,13 +159,13 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
                       GestureDetector(
                         onTap: () {}, // Navigate to Search
                         child: Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.transparent,
                           ),
                           padding: const EdgeInsets.all(15.0), // Padding for the circle
                           child: Icon(
-                            Icons.person,
+                            CupertinoIcons.person_fill,
                             color: Colors.orange[50],
                           ),
                         ),
