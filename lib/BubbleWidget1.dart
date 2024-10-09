@@ -28,7 +28,11 @@ class _BubbleWidget1State extends State<BubbleWidget1> {
     isIcon = widget.isIcon ?? false;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _handleOpacityChange();
+      Future.delayed(Duration(milliseconds: 600), () {
+        if (mounted) {
+          _handleOpacityChange();
+        }
+      });
     });
   }
 
@@ -109,7 +113,7 @@ class _BubbleWidget1State extends State<BubbleWidget1> {
                       opacity: opacity,
                       child: _showNewContent
                           ? (isIcon
-                          ? Icon(Icons.house, color: Colors.white, size: 20)
+                          ? Icon(Icons.grid_on_sharp, color: Colors.white, size: 20)
                           : Text(
                         text1 + " P",
                         style: const TextStyle(

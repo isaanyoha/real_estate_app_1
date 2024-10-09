@@ -69,33 +69,42 @@ class _SliderWidget1State extends State<SliderWidget1>
 
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
+      if (mounted) {
       int delay = 0;
-      if(id1 == 1){
+      if (id1 == 1) {
         delay = 0;
-      }else if(id1 == 3){
+      } else if (id1 == 3) {
         delay = 100;
-      }else if(id1 == 2 || id1 == 4){
+      } else if (id1 == 2 || id1 == 4) {
         delay = 500;
       }
 
       Future.delayed(Duration(milliseconds: delay), () {
         Future.delayed(Duration(milliseconds: 5000), () {
-        _controller2.forward();
-      });
+          if (mounted) {
+            _controller2.forward();
+          }
+        });
 
-      Future.delayed(Duration(milliseconds: 5500), () {
-        _controller3.forward();
-      });
+        Future.delayed(Duration(milliseconds: 5500), () {
+          if (mounted) {
+            _controller3.forward();
+          }
+        });
 
-      Future.delayed(Duration(milliseconds: 5000), () {
-        _controller4.forward();
-      });
+        Future.delayed(Duration(milliseconds: 5000), () {
+          if (mounted) {
+            _controller4.forward();
+          }
+        });
 
-      Future.delayed(Duration(milliseconds: 6000), () {
-        _controller5.forward();
+        Future.delayed(Duration(milliseconds: 6000), () {
+          if (mounted) {
+            _controller5.forward();
+          }
+        });
       });
-    });
+    }
     });
 
     _roundedScaleAnimation1 = Tween<double>(begin: 0.0, end: 1.0).animate(
