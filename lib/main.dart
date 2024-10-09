@@ -39,8 +39,8 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
 
   // List of pages to display
   final List<Widget> _pages = [
-    HomePage(), // HomePage widget
-    SearchPage(), // SearchPage widget
+    HomePage(),
+    SearchPage(),
   ];
 
   // Method to handle index change
@@ -74,7 +74,7 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
     });
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -84,101 +84,94 @@ class _MainPageState extends State<MainPage> with TickerProviderStateMixin {
             bottom: 20, // Distance from bottom
             left: 0,
             right: 0,
-            child:
-            SlideTransition(
+            child: SlideTransition(
               position: _animation1,
               child: FadeTransition(
                 opacity: _controller1.drive(CurveTween(curve: Curves.easeIn)),
-                child:
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () => _onItemTapped(1), // Navigate to Search
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _selectedIndex == 1 ? Colors.orangeAccent : Colors.transparent,
+                          ),
+                          padding: const EdgeInsets.all(15.0), // Padding for the circle
+                          child: Icon(
+                            Icons.search,
+                            color: Colors.orange[50],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.transparent,
+                          ),
+                          padding: const EdgeInsets.all(15.0), // Padding for the circle
+                          child: Icon(
+                            Icons.chat,
+                            color: Colors.orange[50],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => _onItemTapped(0), // Navigate to Home
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _selectedIndex == 0 ? Colors.orangeAccent : Colors.transparent,
+                          ),
+                          padding: const EdgeInsets.all(15.0), // Padding for the circle
+                          child: Icon(
+                            Icons.home,
+                            color: Colors.orange[50],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.transparent,
+                          ),
+                          padding: const EdgeInsets.all(15.0), // Padding for the circle
+                          child: Icon(
+                            Icons.heart_broken,
+                            color: Colors.orange[50],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {}, // Navigate to Search
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.transparent,
+                          ),
+                          padding: const EdgeInsets.all(15.0), // Padding for the circle
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.orange[50],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => _onItemTapped(1), // Navigate to Search
-                    child: Expanded(child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _selectedIndex == 1 ? Colors.orangeAccent : Colors.transparent,
-                      ),
-                      padding: const EdgeInsets.all(15.0), // Padding for the circle
-                      child: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                    )),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-
-                    },
-                    child: Expanded(child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                      ),
-                      padding: const EdgeInsets.all(15.0), // Padding for the circle
-                      child: Icon(
-                        Icons.chat,
-                        color: Colors.white,
-                      ),
-                    )),
-                  ),
-                  GestureDetector(
-                    onTap: () => _onItemTapped(0), // Navigate to Home
-                    child: Expanded(child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _selectedIndex == 0 ? Colors.orangeAccent : Colors.transparent,
-                      ),
-                      padding: const EdgeInsets.all(15.0), // Padding for the circle
-                      child: Icon(
-                        Icons.home,
-                        color: Colors.white,
-                      ),
-                    )),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-
-                    },
-                    child: Expanded(child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                      ),
-                      padding: const EdgeInsets.all(15.0), // Padding for the circle
-                      child: Icon(
-                        Icons.heart_broken,
-                        color: Colors.white,
-                      ),
-                    )),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-
-                    }, // Navigate to Search
-                    child: Expanded(child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.transparent,
-                      ),
-                      padding: const EdgeInsets.all(15.0), // Padding for the circle
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
-                    )),
-                  ),
-                ],
-              ),
-            )),
             ),
           ),
         ],

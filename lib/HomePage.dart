@@ -75,9 +75,11 @@ class _HomePageState extends State<HomePage>
 
     // Simulate a delay before starting the fade-in effect
     Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        _opacity = 1.0;
-      });
+      if (mounted) {
+        setState(() {
+          _opacity = 1.0;
+        });
+      }
     });
 
     _slideAnimation1 = Tween<Offset>(
@@ -106,23 +108,33 @@ class _HomePageState extends State<HomePage>
 
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller1.forward();
+      if (mounted) {
+        _controller1.forward();
 
-      Future.delayed(Duration(milliseconds: 2000), () {
-        _controller2.forward();
-      });
+        Future.delayed(Duration(milliseconds: 2000), () {
+          if (mounted) {
+            _controller2.forward();
+          }
+        });
 
-      Future.delayed(Duration(milliseconds: 2100), () {
-        _controller3.forward();
-      });
+        Future.delayed(Duration(milliseconds: 2100), () {
+          if (mounted) {
+            _controller3.forward();
+          }
+        });
 
-      Future.delayed(Duration(milliseconds: 2600), () {
-        _controller4.forward();
-      });
+        Future.delayed(Duration(milliseconds: 2600), () {
+          if (mounted) {
+            _controller4.forward();
+          }
+        });
 
-      Future.delayed(Duration(milliseconds: 3800), () {
-        _controller5.forward();
-      });
+        Future.delayed(Duration(milliseconds: 3800), () {
+          if (mounted) {
+            _controller5.forward();
+          }
+        });
+      }
     });
   }
 

@@ -1,64 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:real_estate_app_1/CounterWidget1.dart';
-import 'package:real_estate_app_1/GalleryContentWidget1.dart';
+import 'BubbleWidget1.dart'; // Ensure this import matches your file structure
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
-
   @override
   _SearchPageState createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage>
-    with TickerProviderStateMixin {
+class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   late AnimationController _controller1;
-  late AnimationController _controller2;
-  late AnimationController _controller3;
-  late AnimationController _controller4;
-  late AnimationController _controller5;
-  late Animation<double> _rectangleAnimation;
   late Animation<double> _roundedScaleAnimation1;
-  late Animation<double> _roundedScaleAnimation2;
+  late AnimationController _listController;
+  late Animation<double> _listScaleAnimation;
+  late AnimationController _bubbleController; // New animation controller
+  bool _showList = false;
+  IconData _floatingIcon = Icons.wallet;
+  int? _selectedIndex = 1;
 
-  double _opacity = 0.0;
-  late Animation<Offset> _slideAnimation1;
-  late Animation<Offset> _slideAnimation2;
-  late Animation<Offset> _slideAnimation3;
+  final List<Map<String, dynamic>> _items = [
+    {'icon': Icons.safety_check_outlined, 'title': 'Cosy areas'},
+    {'icon': Icons.wallet, 'title': 'Price'},
+    {'icon': Icons.shopping_basket, 'title': 'Infrastructure'},
+    {'icon': Icons.layers, 'title': 'Without any Layer'},
+  ];
+
+  // List of positions for the BubbleWidgets
+  final List<Offset> _bubblePositions = [
+    Offset(100, 100),
+    Offset(200, 200),
+    Offset(300, 100),
+    Offset(100, 300),
+    Offset(200, 400),
+    Offset(300, 300),
+  ];
+
+  bool isIcon = false;
 
   @override
   void initState() {
     super.initState();
 
     _controller1 = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 500),
       vsync: this,
-    );
-
-    _controller2 = AnimationController(
-      duration: Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
-    _controller3 = AnimationController(
-      duration: Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
-    _controller4 = AnimationController(
-      duration: Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
-    _controller5 = AnimationController(
-      duration: Duration(milliseconds: 2000),
-      vsync: this,
-    );
-
-    _rectangleAnimation = Tween<double>(begin: -100, end: 0).animate(
-      CurvedAnimation(
-        parent: _controller1,
-        curve: Curves.easeIn,
-      ),
     );
 
     _roundedScaleAnimation1 = Tween<double>(begin: 0.0, end: 1.0).animate(
@@ -68,62 +51,29 @@ class _SearchPageState extends State<SearchPage>
       ),
     );
 
-    _roundedScaleAnimation2 = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _listController = AnimationController(
+      duration: Duration(milliseconds: 300),
+      vsync: this,
+    );
+
+    _listScaleAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-        parent: _controller4,
+        parent: _listController,
         curve: Curves.easeOut,
       ),
     );
 
-    // Simulate a delay before starting the fade-in effect
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        _opacity = 1.0;
-      });
-    });
+    _bubbleController = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
 
-    _slideAnimation1 = Tween<Offset>(
-      begin: Offset(0.0, 1.0), // Start from below
-      end: Offset.zero, // End at its original position
-    ).animate(CurvedAnimation(
-      parent: _controller2,
-      curve: Curves.easeInOut,
-    ));
-
-    _slideAnimation2 = Tween<Offset>(
-      begin: Offset(0.0, 1.0), // Start from below
-      end: Offset.zero, // End at its original position
-    ).animate(CurvedAnimation(
-      parent: _controller3,
-      curve: Curves.easeInOut,
-    ));
-
-    _slideAnimation3 = Tween<Offset>(
-      begin: Offset(0.0, 1.0), // Start from below
-      end: Offset.zero, // End at its original position
-    ).animate(CurvedAnimation(
-      parent: _controller5,
-      curve: Curves.easeInOut,
-    ));
-
-    // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller1.forward();
-
-      Future.delayed(Duration(milliseconds: 1200), () {
-        _controller2.forward();
-      });
-
-      Future.delayed(Duration(milliseconds: 1500), () {
-        _controller3.forward();
-      });
-
-      Future.delayed(Duration(milliseconds: 1800), () {
-        _controller4.forward();
-      });
-
-      Future.delayed(Duration(milliseconds: 3000), () {
-        _controller5.forward();
+      Future.delayed(Duration(milliseconds: 500), () {
+        if (mounted) {
+          _bubbleController.forward();
+        }
       });
     });
   }
@@ -131,289 +81,263 @@ class _SearchPageState extends State<SearchPage>
   @override
   void dispose() {
     _controller1.dispose();
-    _controller2.dispose();
-    _controller3.dispose();
-    _controller4.dispose();
-    _controller5.dispose();
+    _listController.dispose();
+    _bubbleController.dispose(); // Dispose the bubble controller
     super.dispose();
+  }
+
+  Future<void> _hideList() async {
+    if (_showList) {
+      await _listController.reverse();
+      setState(() {
+        _showList = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white70, Colors.orangeAccent], // Add your two colors here
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+      body: GestureDetector(
+        onTap: _hideList, // Call the hide list function when tapping outside
+        child: Stack(
+          children: [
+            // First child: Google Map view (dummy)
+            Container(
+              height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/google_map_view_1.jpeg"), // Replace with your asset image path
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
-          child: Center(
-              child: Stack(
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 10),
-                        child: SingleChildScrollView(child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  AnimatedBuilder(
-                                    animation: _rectangleAnimation,
-                                    builder: (context, child) {
-                                      return Transform.translate(
-                                        offset: Offset(_rectangleAnimation.value, 0),
-                                        child: Container(
-                                            padding: const EdgeInsets.all(15),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white60,
-                                              borderRadius: BorderRadius.circular(10), // Adjust the value for more or less roundness
-                                            ),
-                                            child:
-                                            TweenAnimationBuilder(
-                                              tween: Tween<double>(begin: 0.0, end: _opacity),
-                                              duration: const Duration(milliseconds: 500),
-                                              builder: (context, opacity, child) {
-                                                return Opacity(
-                                                  opacity: opacity,
-                                                  child: Row(children: [
-                                                    Icon(Icons.location_on_rounded, color: Colors.brown[300], size: 15), const SizedBox(width: 2), Text("Saint Petersburg", style: TextStyle(fontSize: 13, color: Colors.brown[200], fontWeight: FontWeight.w900), textAlign: TextAlign.left)
-                                                  ]),
-                                                );
-                                              },
-                                            )
-                                        ),
-                                      );
-                                    },
-                                  ), // Space between the widgets
-                                  AnimatedBuilder(
-                                    animation: _roundedScaleAnimation1,
-                                    builder: (context, child) {
-                                      return Transform.scale(
-                                          scale: _roundedScaleAnimation1.value,
-                                          child: CircleAvatar(
-                                              child: ClipOval(
-                                                child: Image.asset(
-                                                  "assets/images/profile_1.jpeg", // Update with your asset image path
-                                                  fit: BoxFit.cover, // Ensures the image covers the entire CircleAvatar
-                                                  width: 60, // Adjust the width as needed
-                                                  height: 60, // Adjust the height as needed
-                                                ),
-                                              )));
-                                    },
-                                  )
-                                ],
+            // Bubble widgets positioned at specified offsets with scale animation
+            ..._bubblePositions.map((offset) {
+              return Positioned(
+                left: offset.dx,
+                top: offset.dy,
+                child: ScaleTransition(
+                  scale: CurvedAnimation(
+                    parent: _bubbleController,
+                    curve: Curves.easeOut,
+                  ),
+                  child: BubbleWidget1(
+                    id1: _bubblePositions.indexOf(offset) + 1, // Assign id based on index
+                    animationController: _controller1,
+                    isIcon: isIcon,
+                  ),
+                ),
+              );
+            }).toList(),
+            // Search TextField positioned to the left
+            Positioned(
+              top: 20,
+              left: 20,
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: "Saint Petersburg",
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50.0),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: const Icon(Icons.search),
+                  ),
+                ),
+              ),
+            ),
+            // Settings icon positioned at the top right
+            Positioned(
+              top: 20,
+              right: 20,
+              child: AnimatedBuilder(
+                animation: _roundedScaleAnimation1,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _roundedScaleAnimation1.value,
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white,
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.tune_rounded, color: Colors.black),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            // Third child: Floating button at bottom-left
+            Positioned(
+              bottom: 100,
+              left: 20,
+              child: Column(
+                children: [
+                  Stack(children: [
+                    AnimatedBuilder(
+                      animation: _roundedScaleAnimation1,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _roundedScaleAnimation1.value,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _showList = !_showList; // Toggle the list visibility
+                                if (_showList) {
+                                  _listController.forward(); // Start showing the list with animation
+                                } else {
+                                  _listController.reverse(); // Start hiding the list with animation
+                                }
+                              });
+                            },
+                            child: Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white.withOpacity(0.5),
                               ),
-                              Padding(padding: EdgeInsets.only(top: 30, bottom: 30),
-                                  child: Column(
-                                      children:[
-                                        Row(children:[
-                                          TweenAnimationBuilder(
-                                            tween: Tween<double>(begin: 0.0, end: _opacity),
-                                            duration: const Duration(milliseconds: 0),
-                                            builder: (context, opacity, child) {
-                                              return Opacity(
-                                                opacity: opacity,
-                                                child: Text("Hi, Marina", style: TextStyle(fontSize: 30, color: Colors.brown[200])),
-                                              );
-                                            },
-                                          ),
-                                        ]),
-                                        Row(children: [
-                                          Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              SlideTransition(
-                                                position: _slideAnimation1,
-                                                child: FadeTransition(
-                                                  opacity: _controller2.drive(CurveTween(curve: Curves.easeIn)),
-                                                  child: Text(
-                                                    "let's select your",
-                                                    style: TextStyle(fontSize: 35),
-                                                  ),
-                                                ),
-                                              ),
-                                              SlideTransition(
-                                                position: _slideAnimation2,
-                                                child: FadeTransition(
-                                                  opacity: _controller3.drive(CurveTween(curve: Curves.easeIn)),
-                                                  child: Text(
-                                                    "perfect place",
-                                                    style: TextStyle(fontSize: 35),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ])
-                                      ])),
-                              Row(
-                                  children: [
-                                    // Left: Circle
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          // Left: Circle
-                                          Expanded(
-                                            child: AnimatedBuilder(
-                                              animation: _roundedScaleAnimation2,
-                                              builder: (context, child) {
-                                                return Transform.scale(
-                                                  scale: _roundedScaleAnimation2.value,
-                                                  child: AspectRatio(
-                                                    aspectRatio: 1, // Aspect ratio of 1:1 to ensure a square or circle
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.orangeAccent,
-                                                        shape: BoxShape.circle, // Makes the container a circle
-                                                      ),
-                                                      child: Stack(
-                                                          alignment: Alignment.center, // Center aligns all children
-                                                          children: [
-                                                            // Positioned for "BUY" at the top center
-                                                            const Positioned(
-                                                              top: 20, // Position at the top
-                                                              child: Text(
-                                                                "BUY",
-                                                                style: TextStyle(fontSize: 15, color: Colors.white),
-                                                                textAlign: TextAlign.center,
-                                                              ),
-                                                            ),
-                                                            // Center the "1024" text
-                                                            /**
-                                                                Text(
-                                                                "1024",
-                                                                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.white),
-                                                                textAlign: TextAlign.center,
-                                                                )**/
-                                                            CounterWidget1(typeId: 1)
-                                                            ,
-                                                            // Positioned for "offers" below "1024"
-                                                            Positioned(
-                                                              bottom: 40, // Position at the bottom
-                                                              child: Text(
-                                                                "offers",
-                                                                style: TextStyle(fontSize: 15, color: Colors.white),
-                                                                textAlign: TextAlign.center,
-                                                              ),
-                                                            ),
-                                                          ]
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          SizedBox(width: 10),
-                                          // Right: Rounded-corner square
-                                          Expanded(
-                                            child: AnimatedBuilder(
-                                              animation: _roundedScaleAnimation2,
-                                              builder: (context, child) {
-                                                return Transform.scale(
-                                                  scale: _roundedScaleAnimation2.value,
-                                                  child: AspectRatio(
-                                                    aspectRatio: 1, // Aspect ratio of 1:1 to ensure a square
-                                                    child: Container(
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.brown[50],
-                                                          borderRadius: BorderRadius.circular(15), // Rounded corners for square
-                                                        ),
-                                                        child:
-                                                        Stack(
-                                                          alignment: Alignment.center, // Center aligns all children
-                                                          children: [
-                                                            // Positioned for "BUY" at the top center
-                                                            Positioned(
-                                                              top: 20, // Position at the top
-                                                              child: Text(
-                                                                "RENT",
-                                                                style: TextStyle(fontSize: 15, color: Colors.brown[300]),
-                                                                textAlign: TextAlign.center,
-                                                              ),
-                                                            ),
-                                                            // Center the "1024" text
-                                                            /**
-                                                                Text(
-                                                                "2212",
-                                                                style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900, color: Colors.brown[300]),
-                                                                textAlign: TextAlign.center,
-                                                                )**/
-                                                            CounterWidget1(typeId: 2)
-                                                            ,
-                                                            // Positioned for "offers" below "1024"
-                                                            Positioned(
-                                                              bottom: 40, // Position at the bottom
-                                                              child: Text(
-                                                                "offers",
-                                                                style: TextStyle(fontSize: 15, color: Colors.brown[300]),
-                                                                textAlign: TextAlign.center,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                          //)
-                                                        )
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ])
-                            ]))),
-                    SlideTransition(
-                        position: _slideAnimation3,
+                              child: Center(child: Icon(_floatingIcon, color: Colors.white)),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ]),
+                  const SizedBox(height: 5),
+                  AnimatedBuilder(
+                    animation: _roundedScaleAnimation1,
+                    builder: (context, child) {
+                      return Transform.scale(
+                        scale: _roundedScaleAnimation1.value,
                         child: Container(
-                          margin: const EdgeInsets.only(top: 20),
+                          width: 50,
+                          height: 50,
                           decoration: BoxDecoration(
-                            color: Colors.white, // Set the background color to white
-                            borderRadius: BorderRadius.circular(20), // Apply rounded corners
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.5),
                           ),
-                          child: Column(
-                            children: [
-                              Flexible(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: GalleryContentWidget1(id1: 1),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Flexible(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: GalleryContentWidget1(id1: 2),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: GalleryContentWidget1(id1: 3),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: GalleryContentWidget1(id1: 4),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          child: const Center(
+                            child: Icon(Icons.navigation_rounded, color: Colors.white),
                           ),
-                        ))
-                  ])
-          )),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            // Fourth child: Row with list icon and text at bottom-right
+            Positioned(
+              bottom: 100,
+              right: 20,
+              child: AnimatedBuilder(
+                animation: _roundedScaleAnimation1,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _roundedScaleAnimation1.value,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      padding: const EdgeInsets.all(15),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.list, color: Colors.white),
+                          SizedBox(width: 5),
+                          Text(
+                            "List Of Variants",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            // Conditional rendering of the list items with scaling animation
+            if (_showList)
+              Positioned(
+                bottom: 155,
+                left: 20,
+                child: SizedBox(
+                  width: 200, // Set a width for the list
+                  child: AnimatedBuilder(
+                    animation: _listScaleAnimation,
+                    builder: (context, child) {
+                      return Transform(
+                        transform: Matrix4.identity()
+                          ..translate(-10 * (1 - _listScaleAnimation.value), -10 * (1 - _listScaleAnimation.value))
+                          ..scale(_listScaleAnimation.value),
+                        alignment: Alignment.bottomLeft,
+                        child: _buildListItems(),
+                      );
+                    },
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _buildListItems() {
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.orange[50],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      height: 300, // Set a fixed height for the list container
+      child: SingleChildScrollView( // Wrap the Column with SingleChildScrollView
+        child: Column(
+          children: _items.asMap().entries.map((entry) {
+            int index = entry.key;
+            Map<String, dynamic> item = entry.value;
+            bool isSelected = _selectedIndex == index;
+
+            return GestureDetector(
+              onTap: () async {
+                _selectedIndex = index;
+                _floatingIcon = item['icon'];
+                await _listController.reverse();
+                _showList = false;
+
+                if (_selectedIndex == 3) {
+                  isIcon = true;
+                } else {
+                  isIcon = false;
+                }
+
+                setState(() {});
+              },
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 0),
+                child: ListTile(
+                  leading: Icon(
+                    item['icon'],
+                    color: isSelected ? Colors.orange : Colors.black45,
+                  ),
+                  title: Text(
+                    item['title'],
+                    style: TextStyle(color: isSelected ? Colors.orange : Colors.black45),
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 }
