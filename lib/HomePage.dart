@@ -11,7 +11,6 @@ class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin {
   late AnimationController _animationController1;
   late AnimationController _animationController2;
-  late AnimationController _animationController3;
   late AnimationController _animationController4;
   late AnimationController _animationController5;
   
@@ -19,7 +18,6 @@ class _HomePageState extends State<HomePage>
   late Animation<double> _animation2;
   late Animation<double> _animation3;
   late Animation<Offset> _animation4;
-  late Animation<Offset> _animation5;
   late Animation<Offset> _animation6;
 
   double _opacity1 = 0.0;
@@ -35,12 +33,7 @@ class _HomePageState extends State<HomePage>
     );
 
     _animationController2 = AnimationController(
-      duration: const Duration(milliseconds: 800),
-      vsync: this,
-    );
-
-    _animationController3 = AnimationController(
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
@@ -85,7 +78,7 @@ class _HomePageState extends State<HomePage>
     });
 
     // Simulate a delay before starting the fade-in effect
-    Future.delayed(const Duration(milliseconds: 1700), () {
+    Future.delayed(const Duration(milliseconds: 1200), () {
       if (mounted) {
         setState(() {
           _opacity2 = 1.0;
@@ -98,14 +91,6 @@ class _HomePageState extends State<HomePage>
       end: Offset.zero, // End at its original position
     ).animate(CurvedAnimation(
       parent: _animationController2,
-      curve: Curves.easeInOut,
-    ));
-
-    _animation5 = Tween<Offset>(
-      begin: const Offset(0.0, 1.0), // Start from below
-      end: Offset.zero, // End at its original position
-    ).animate(CurvedAnimation(
-      parent: _animationController3,
       curve: Curves.easeInOut,
     ));
 
@@ -124,7 +109,7 @@ class _HomePageState extends State<HomePage>
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        Future.delayed(const Duration(milliseconds: 1500), () {
+        Future.delayed(const Duration(milliseconds: 800), () {
           if (mounted) {
             _animationController2.forward();
           }
@@ -132,17 +117,11 @@ class _HomePageState extends State<HomePage>
 
         Future.delayed(const Duration(milliseconds: 2000), () {
           if (mounted) {
-            _animationController3.forward();
-          }
-        });
-
-        Future.delayed(const Duration(milliseconds: 2600), () {
-          if (mounted) {
             _animationController4.forward();
           }
         });
 
-        Future.delayed(const Duration(milliseconds: 3800), () {
+        Future.delayed(const Duration(milliseconds: 3500), () {
           if (mounted) {
             _animationController5.forward();
           }
@@ -155,7 +134,6 @@ class _HomePageState extends State<HomePage>
   void dispose() {
     _animationController1.dispose();
     _animationController2.dispose();
-    _animationController3.dispose();
     _animationController4.dispose();
     _animationController5.dispose();
 
@@ -248,28 +226,38 @@ class _HomePageState extends State<HomePage>
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SlideTransition(
-                      position: _animation4,
-                      child: FadeTransition(
-                        opacity: _animationController2.drive(CurveTween(curve: Curves.easeIn)),
-                        child: const Text(
-                          "let's select your",
-                          style: TextStyle(fontSize: 35),
+                    children: [
+                      ClipRect( // Clip the widget to limit its visibility
+                        child: SizedBox(
+                            height: 45, // Set the height of the visible area (acts like a baseline)
+                            child: Align(
+                                alignment: Alignment.bottomCenter, // Start at the bottom
+                                child: SlideTransition(
+                        position: _animation4,
+                        child: FadeTransition(
+                          opacity: _animationController2.drive(CurveTween(curve: Curves.easeIn)),
+                          child: const Text(
+                            "let's select your",
+                            style: TextStyle(fontSize: 35),
+                          ),
                         ),
-                      ),
-                    ),
-                    SlideTransition(
-                      position: _animation5,
-                      child: FadeTransition(
-                        opacity: _animationController3.drive(CurveTween(curve: Curves.easeIn)),
-                        child: const Text(
-                          "perfect place",
-                          style: TextStyle(fontSize: 35),
+                      )))),
+                      ClipRect( // Clip the widget to limit its visibility
+                        child: SizedBox(
+                            height: 45, // Set the height of the visible area (acts like a baseline)
+                            child: Align(
+                                alignment: Alignment.bottomCenter, // Start at the bottom
+                                child: SlideTransition(
+                        position: _animation4,
+                        child: FadeTransition(
+                          opacity: _animationController2.drive(CurveTween(curve: Curves.easeIn)),
+                          child: const Text(
+                            "perfect place",
+                            style: TextStyle(fontSize: 35),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                      ))))
+                    ],
                 ),
               ])
             ])),
