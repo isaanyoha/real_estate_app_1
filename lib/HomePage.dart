@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage>
     );
 
     _animationController2 = AnimationController(
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 950),
       vsync: this,
     );
 
@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage>
     // Start the animation after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        Future.delayed(const Duration(milliseconds: 800), () {
+        Future.delayed(const Duration(milliseconds: 900), () {
           if (mounted) {
             _animationController2.forward();
           }
