@@ -1,3 +1,5 @@
+import "dart:ui";
+
 import "package:flutter/material.dart";
 
 class SliderWidget1 extends StatefulWidget {
@@ -188,64 +190,69 @@ class _SliderWidget1State extends State<SliderWidget1>
     return Stack(
       //mainAxisSize: MainAxisSize.max,
       children: [
-        // Use an AnimatedBuilder to animate the width and icon position
-        AnimatedBuilder(
-          animation: Listenable.merge([_animation2, _animation4]),
-          builder: (context, child) {
-            return Transform.scale(
-              scale: _animation2.value, // Apply the scale animation to the container
-              child: Container(
-                padding: const EdgeInsets.only(top: 3, bottom: 3, left: 4, right: 4),
-                width: _animation4.value, // Animate the container"s width
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8),
-                  borderRadius: BorderRadius.circular(25), // Adjust for roundness
-                  boxShadow: const [
-                    BoxShadow(color: Colors.black26, blurRadius: 5.0),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end, // Align the icon to the right
-                  children: [
-                    Transform.translate(
-                      offset: Offset(_animation3.value * (1 / 100), 0), // Slide the icon to the right
-                      child: AnimatedBuilder(
-                        animation: _animation1,
-                        builder: (context, child) {
-                          return Transform.scale(
-                            scale: _animation1.value,
-                            child: Container(
-                              width: 40, // Set width and height to ensure it"s a circle
-                              height: 40,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.orange[50],
-                                boxShadow: [
-      BoxShadow(
-        color: Colors.black.withOpacity(0.4), // Shadow color
-        blurRadius: 10.0, // Spread of the shadow
-        offset: const Offset(2.0, 2.0), // Direction of the shadow
-      ),
+    AnimatedBuilder(
+    animation: Listenable.merge([_animation2, _animation4]),
+    builder: (context, child) {
+    return Transform.scale(
+    scale: _animation2.value, // Apply the scale animation to the container
+    child: ClipRRect(
+    borderRadius: BorderRadius.circular(25), // Adjust for roundness
+    child: BackdropFilter(
+    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0), // Apply blur effect
+    child: Container(
+    padding: const EdgeInsets.only(top: 3, bottom: 3, left: 4, right: 4),
+    width: _animation4.value, // Animate the container's width
+    decoration: BoxDecoration(
+    color: Colors.white.withOpacity(0.7), // Frosted effect with lower opacity
+    borderRadius: BorderRadius.circular(25), // Rounded corners
+    boxShadow: const [
+    BoxShadow(color: Colors.black26, blurRadius: 5.0),
     ],
-                              ),
-                              child: Center(  // Center the icon within the circle
-                                child: Icon(
-                                  Icons.chevron_right,
-                                  color: Colors.brown[300],
-                                  size: 20,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+    ),
+    child: Row(
+    mainAxisAlignment: MainAxisAlignment.end, // Align the icon to the right
+    children: [
+    Transform.translate(
+    offset: Offset(_animation3.value * (1 / 100), 0), // Slide the icon to the right
+    child: AnimatedBuilder(
+    animation: _animation1,
+    builder: (context, child) {
+    return Transform.scale(
+    scale: _animation1.value,
+    child: Container(
+    width: 40, // Set width and height to ensure it's a circle
+    height: 40,
+    decoration: BoxDecoration(
+    shape: BoxShape.circle,
+    color: Colors.orange[50],
+    boxShadow: [
+    BoxShadow(
+    color: Colors.black.withOpacity(0.4), // Shadow color
+    blurRadius: 10.0, // Spread of the shadow
+    offset: const Offset(2.0, 2.0), // Direction of the shadow
+    ),
+    ],
+    ),
+    child: Center(  // Center the icon within the circle
+    child: Icon(
+    Icons.chevron_right,
+    color: Colors.brown[300],
+    size: 20,
+    ),
+    ),
+    ),
+    );
+    },
+    ),
+    ),
+    ],
+    ),
+    ),
+    ),
+    ),
+    );
+    },
+    ),
         Positioned(
             top: 0,
             bottom: 0,
